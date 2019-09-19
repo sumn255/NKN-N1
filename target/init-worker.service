@@ -1,0 +1,12 @@
+[Unit]
+Description=Init docker swarm worker
+After=network.target ntp.service docker.service
+Wants=docker.service
+
+[Service]
+ExecStart=/usr/local/bin/init-worker.sh
+Restart=on-failure
+RestartSec=60s
+
+[Install]
+WantedBy=multi-user.target

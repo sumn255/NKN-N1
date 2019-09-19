@@ -1,0 +1,5 @@
+{
+	"data-root": "/mnt/sda1/docker/",
+	"labels": ["device=phicomm-n1"]
+}
+

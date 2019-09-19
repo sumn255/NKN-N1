@@ -1,0 +1,25 @@
+#!/bin/bash -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+/root/install.sh >>/boot/install_log.txt 2>&1
+. /lib/lsb/init-functions
+if [[ -e /dev/sda && ! -e /dev/sda1 ]];then
+    parted /dev/sda --script mklabel gpt mkpart primary 2048s 100%
+    /root/start_worker.sh
+fi
+if [ -e /dev/sda1 ] ;then
+    /bin/systemctl start usb-mount@sda1.service
+fi
+#/root/start_worker.sh#this script have been called by usb-mount@sda1.service
+/root/firstboot.sh 2>>/root/firstboot.log
+exit 0
